@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="ms">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tawau Aduan</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell is-home">
+      <header class="app-header">
+        <div class="brand-lockup" aria-label="Tawau Aduan">
+          <span class="brand-mark">TA</span>
+          <div>
+            <strong>Tawau Aduan</strong>
+            <small>Smart Civic Response</small>
+          </div>
+        </div>
+        <button class="icon-button" id="notificationsButton" type="button" aria-label="Notifications">
+          <span class="bell-icon"></span>
+        </button>
+      </header>
+
+      <section class="welcome-line">
+        <p>Selamat pagi,</p>
+        <h2>Warga Tawau! <span aria-hidden="true">👋</span></h2>
+      </section>
+
+      <section class="hero">
+        <div class="hero__top">
+          <div>
+            <p class="eyebrow">Smart Civic Response</p>
+            <h1>Tawau Aduan</h1>
+          </div>
+          <div class="trust-badge" aria-label="3 step report">
+            <span>3</span>
+            <small>steps</small>
+          </div>
+        </div>
+        <p class="hero__copy">
+          Together for a Cleaner, Safer Tawau.
+        </p>
+      </section>
+
+      <section class="promise-card" aria-label="App promise">
+        <strong>Report issues, track progress, and help build a better community.</strong>
+      </section>
+
+      <section class="quick-actions" aria-label="Aduan actions">
+        <button class="QuickActionCard action-card action-card--document" id="newAduanAction" type="button">
+          <span class="action-icon document-icon"></span>
+          <strong>Report an Issue</strong>
+          <small>Let us know what’s wrong</small>
+        </button>
+        <button class="QuickActionCard action-card" id="trackAction" type="button">
+          <span class="action-icon search-icon"></span>
+          <strong>Track Case</strong>
+          <small>Follow up on your complaint</small>
+        </button>
+        <button class="QuickActionCard action-card action-card--nearby" id="nearbyAction" type="button">
+          <span class="action-icon pin-dot-icon"></span>
+          <strong>Nearby Issues</strong>
+          <small>See issues reported near you</small>
+        </button>
+        <button class="QuickActionCard action-card action-card--help" id="helpAction" type="button">
+          <span class="action-icon headset-icon"></span>
+          <strong>Help</strong>
+          <small>FAQs & contact support</small>
+        </button>
+      </section>
+
+      <section class="StatsCard glance-card" aria-label="Tawau at a glance">
+        <div class="glance-head">
+          <h2>Tawau at a Glance</h2>
+          <span>This Month</span>
+        </div>
+        <div class="glance-stats">
+          <div>
+            <small>Issues Reported</small>
+            <strong>128</strong>
+          </div>
+          <div>
+            <small>In Progress</small>
+            <strong>94</strong>
+          </div>
+          <div>
+            <small>Resolved</small>
+            <strong>76</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="community-banner">
+        <strong>Thank you for helping make Tawau better!</strong>
+      </section>
+
+      <section class="utility-panel" id="utilityPanel" aria-live="polite"></section>
+
+      <section class="progress-panel" aria-label="Submission progress">
+        <div class="step is-active" data-step-indicator="1">
+          <span>1</span>
+          <p>Details</p>
+        </div>
+        <div class="step" data-step-indicator="3">
+          <span>2</span>
+          <p>Location</p>
+        </div>
+        <div class="step" data-step-indicator="4">
+          <span>3</span>
+          <p>Submit</p>
+        </div>
+      </section>
+
+      <form class="report-form" id="reportForm">
+        <section class="form-page is-active" data-page="1">
+          <div class="ScreenHeader screen-topbar">
+            <button class="screen-icon-btn" type="button" id="reportBackBtn" aria-label="Back">‹</button>
+            <h2>Report an Issue</h2>
+            <button class="screen-icon-btn" type="button" id="reportHelpBtn" aria-label="Help">?</button>
+          </div>
+          <div class="section-heading">
+            <h3>Add Photos <span>(Optional)</span></h3>
+            <p>Upload clear photos to help us understand the issue better.</p>
+          </div>
+          <div class="photo-row" aria-label="Photo uploads">
+            <div class="photo-thumb photo-thumb--sample">
+              <button type="button" aria-label="Remove photo">×</button>
+            </div>
+            <div class="photo-thumb photo-thumb--sample photo-thumb--garbage">
+              <button type="button" aria-label="Remove photo">×</button>
+            </div>
+            <div class="photo-thumb photo-thumb--sample photo-thumb--light">
+              <button type="button" aria-label="Remove photo">×</button>
+            </div>
+            <label class="PhotoUploadCard add-photo-card" for="photoInput">
+              <input id="photoInput" name="photo" type="file" accept="image/*" capture="environment" />
+              <span class="camera-mini-icon"></span>
+              <strong>Add Photo</strong>
+              <img id="photoPreview" alt="" />
+            </label>
+          </div>
+
+          <div class="section-heading section-heading--spaced">
+            <h3>Choose Category</h3>
+          </div>
+          <div class="category-grid category-grid--chips" role="radiogroup" aria-label="Issue category">
+            <label class="CategoryChip">
+              <input type="radio" name="category" value="Garbage" checked />
+              <span><i class="cat-icon cat-icon--garbage"></i>Garbage</span>
+            </label>
+            <label class="CategoryChip">
+              <input type="radio" name="category" value="Road Damage" />
+              <span><i class="cat-icon cat-icon--road"></i>Road Damage</span>
+            </label>
+            <label class="CategoryChip">
+              <input type="radio" name="category" value="Drainage" />
+              <span><i class="cat-icon cat-icon--drain"></i>Drainage</span>
+            </label>
+            <label class="CategoryChip">
+              <input type="radio" name="category" value="Street Light" />
+              <span><i class="cat-icon cat-icon--light"></i>Street Light</span>
+            </label>
+            <label class="CategoryChip">
+              <input type="radio" name="category" value="Public Facility" />
+              <span><i class="cat-icon cat-icon--facility"></i>Public Facility</span>
+            </label>
+            <label class="CategoryChip">
+              <input type="radio" name="category" value="Cleanliness" />
+              <span><i class="cat-icon cat-icon--clean"></i>Cleanliness</span>
+            </label>
+          </div>
+          <div class="report-nearby-nudge">
+            <strong>Similar issue nearby?</strong>
+            <span>Check Nearby Issues to avoid duplicate reports.</span>
+            <button type="button" id="reportNearbyHint">View Nearby</button>
+          </div>
+
+          <label class="field">
+            <span>Describe the Issue</span>
+            <textarea id="description" name="description" rows="4" maxlength="500" placeholder="Provide more details about the issue..."></textarea>
+          </label>
+          <div class="char-counter" id="descriptionCounter">0/500</div>
+          <div class="page-actions">
+            <button class="ButtonPrimary primary-btn" type="button" data-next>Next</button>
+          </div>
+        </section>
+
+        <section class="form-page" data-page="3">
+          <div class="ScreenHeader screen-topbar">
+            <button class="screen-icon-btn" type="button" data-back aria-label="Back">‹</button>
+            <h2>Select Location</h2>
+            <button class="screen-icon-btn" type="button" id="locationHelpBtn" aria-label="Help">?</button>
+          </div>
+          <div class="location-screen">
+            <div class="map-card location-map">
+              <div class="map-grid"></div>
+              <div class="map-pin"></div>
+              <p id="locationStatus">This is where the issue happened.</p>
+            </div>
+            <button class="location-btn location-btn--floating" id="locationBtn" type="button">
+              <span class="target-icon"></span>
+              Use Current Location
+            </button>
+            <label class="AddressCard address-card">
+              <span>Address</span>
+              <textarea id="locationText" name="location" rows="3" required>Jalan Apas, 91000 Tawau,
+Sabah, Malaysia</textarea>
+            </label>
+          </div>
+          <div class="page-actions location-actions">
+            <button class="ButtonPrimary primary-btn" type="button" data-next>Confirm Location</button>
+          </div>
+        </section>
+
+        <section class="form-page" data-page="4">
+          <div class="ScreenHeader screen-topbar">
+            <button class="screen-icon-btn" type="button" data-back aria-label="Back">‹</button>
+            <h2>Review Report</h2>
+            <button class="screen-icon-btn" type="button" id="reviewHelpBtn" aria-label="Help">?</button>
+          </div>
+          <div class="summary-card" id="summaryCard"></div>
+          <div class="page-actions">
+            <button class="ButtonSecondary ghost-btn" id="editDetailsBtn" type="button">Edit Details</button>
+            <button class="ButtonPrimary primary-btn" type="submit">Submit Report</button>
+          </div>
+        </section>
+      </form>
+
+      <section class="result-panel" id="resultPanel" aria-live="polite"></section>
+
+      <nav class="BottomTabBar bottom-nav" aria-label="App navigation">
+        <a class="is-current" href="/home" id="navHome">
+          <span class="home-icon"></span>
+          <small>Home</small>
+        </a>
+        <a href="/track" id="navTrack">
+          <span class="list-icon"></span>
+          <small>Track</small>
+        </a>
+        <a href="/report" id="navAduan">
+          <span class="plus-icon"></span>
+          <small>Report</small>
+        </a>
+        <a href="/nearby" id="navNearby">
+          <span class="pin-dot-icon"></span>
+          <small>Nearby</small>
+        </a>
+        <a href="/profile" id="navProfile">
+          <span class="user-icon"></span>
+          <small>Profile</small>
+        </a>
+      </nav>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
