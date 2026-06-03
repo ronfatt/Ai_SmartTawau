@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/((?!assets/|app\\.js|styles\\.css|tokens\\.css).*)",
+      "destination": "/index.html"
+    }
+  ]
+}
