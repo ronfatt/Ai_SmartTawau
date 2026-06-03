@@ -1,0 +1,63 @@
+:root {
+  --navy900: #06163d;
+  --blue700: #075fea;
+  --blue500: #2388ff;
+  --ice50: #f6faff;
+  --ice100: #eaf3ff;
+  --teal500: #20c7c9;
+  --purple500: #7357f6;
+  --green500: #48c77a;
+  --text-primary: #081638;
+  --text-secondary: #657089;
+
+  --gradient-hero:
+    radial-gradient(circle at 70% 34%, rgba(123, 190, 255, 0.72), transparent 0 18%, transparent 34%),
+    linear-gradient(135deg, #2388ff 0%, #075fea 43%, #06163d 100%);
+  --gradient-surface: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 250, 255, 0.94));
+  --gradient-surface-ice: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(234, 243, 255, 0.78));
+  --gradient-blue-bubble:
+    radial-gradient(circle at 72% 18%, rgba(255, 255, 255, 0.42), transparent 27%),
+    linear-gradient(145deg, #2388ff 0%, #075fea 72%);
+  --gradient-teal-bubble:
+    radial-gradient(circle at 72% 18%, rgba(255, 255, 255, 0.42), transparent 27%),
+    linear-gradient(145deg, #54dadd 0%, #20c7c9 68%, #0c8f93 100%);
+  --gradient-purple-bubble:
+    radial-gradient(circle at 72% 18%, rgba(255, 255, 255, 0.42), transparent 27%),
+    linear-gradient(145deg, #a98cff 0%, #7357f6 72%);
+  --gradient-mint-glass: linear-gradient(90deg, rgba(223, 255, 252, 0.96), rgba(234, 243, 255, 0.92));
+
+  --space-screen-x: 20px;
+  --space-card: 16px;
+  --space-section: 18px;
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 26px;
+  --radius-xl: 34px;
+  --radius-full: 999px;
+  --button-height: 54px;
+  --input-height: 50px;
+  --bottom-tab-height: 72px;
+  --touch-target: 44px;
+
+  --font-screen-title: 26px;
+  --font-section-title: 17px;
+  --font-body: 15px;
+  --font-caption: 13px;
+
+  --shadow-soft-card:
+    0 2px 0 rgba(255, 255, 255, 0.84) inset,
+    0 12px 28px rgba(10, 61, 145, 0.11);
+  --shadow-floating:
+    0 2px 0 rgba(255, 255, 255, 0.38) inset,
+    0 18px 34px rgba(0, 91, 255, 0.28);
+  --shadow-icon-bubble:
+    0 2px 0 rgba(255, 255, 255, 0.42) inset,
+    0 10px 18px rgba(0, 91, 255, 0.22);
+  --shadow-hero:
+    0 2px 0 rgba(255, 255, 255, 0.32) inset,
+    0 22px 46px rgba(7, 95, 234, 0.28),
+    0 10px 24px rgba(6, 22, 61, 0.18);
+  --shadow-nav:
+    0 2px 0 rgba(255, 255, 255, 0.86) inset,
+    0 22px 52px rgba(6, 22, 61, 0.16);
+}

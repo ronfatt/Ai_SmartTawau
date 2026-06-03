@@ -4,10 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tawau Aduan</title>
+    <link rel="stylesheet" href="tokens.css" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <main class="app-shell is-home">
+    <main class="PremiumScreenBackground app-shell is-home">
       <header class="app-header">
         <div class="brand-lockup" aria-label="Tawau Aduan">
           <span class="brand-mark">TA</span>
@@ -26,71 +27,73 @@
         <h2>Warga Tawau! <span aria-hidden="true">👋</span></h2>
       </section>
 
-      <section class="hero">
+      <section class="HeroCard hero">
+        <img class="hero__image" src="assets/hero.png" alt="" aria-hidden="true" />
+        <div class="hero__shade" aria-hidden="true"></div>
         <div class="hero__top">
           <div>
             <p class="eyebrow">Smart Civic Response</p>
             <h1>Tawau Aduan</h1>
+            <p class="hero__copy">
+              Together for a Cleaner, Safer Tawau.
+            </p>
           </div>
-          <div class="trust-badge" aria-label="3 step report">
-            <span>3</span>
+          <div class="trust-badge" aria-label="4 step report">
+            <span>4</span>
             <small>steps</small>
           </div>
         </div>
-        <p class="hero__copy">
-          Together for a Cleaner, Safer Tawau.
-        </p>
       </section>
 
-      <section class="promise-card" aria-label="App promise">
+      <section class="PremiumSurfaceCard promise-card" aria-label="App promise">
         <strong>Report issues, track progress, and help build a better community.</strong>
       </section>
 
       <section class="quick-actions" aria-label="Aduan actions">
-        <button class="QuickActionCard action-card action-card--document" id="newAduanAction" type="button">
+        <button class="ActionCard QuickActionCard action-card action-card--document" id="newAduanAction" type="button">
           <span class="action-icon document-icon"></span>
           <strong>Report an Issue</strong>
           <small>Let us know what’s wrong</small>
         </button>
-        <button class="QuickActionCard action-card" id="trackAction" type="button">
+        <button class="ActionCard QuickActionCard action-card" id="trackAction" type="button">
           <span class="action-icon search-icon"></span>
           <strong>Track Case</strong>
           <small>Follow up on your complaint</small>
         </button>
-        <button class="QuickActionCard action-card action-card--nearby" id="nearbyAction" type="button">
+        <button class="ActionCard QuickActionCard action-card action-card--nearby" id="nearbyAction" type="button">
           <span class="action-icon pin-dot-icon"></span>
           <strong>Nearby Issues</strong>
           <small>See issues reported near you</small>
         </button>
-        <button class="QuickActionCard action-card action-card--help" id="helpAction" type="button">
+        <button class="ActionCard QuickActionCard action-card action-card--help" id="helpAction" type="button">
           <span class="action-icon headset-icon"></span>
           <strong>Help</strong>
           <small>FAQs & contact support</small>
         </button>
       </section>
 
-      <section class="StatsCard glance-card" aria-label="Tawau at a glance">
+      <section class="PremiumSurfaceCard StatsCard glance-card" aria-label="Tawau at a glance">
         <div class="glance-head">
           <h2>Tawau at a Glance</h2>
           <span>This Month</span>
         </div>
         <div class="glance-stats">
-          <div>
+          <div class="StatMetric">
             <small>Issues Reported</small>
             <strong>128</strong>
           </div>
-          <div>
+          <div class="StatMetric">
             <small>In Progress</small>
             <strong>94</strong>
           </div>
-          <div>
+          <div class="StatMetric">
             <small>Resolved</small>
             <strong>76</strong>
           </div>
         </div>
       </section>
 
-      <section class="community-banner">
+      <section class="ThankYouBanner community-banner">
         <strong>Thank you for helping make Tawau better!</strong>
       </section>
 
@@ -228,7 +231,7 @@ Sabah, Malaysia</textarea>
 
       <section class="result-panel" id="resultPanel" aria-live="polite"></section>
 
-      <nav class="BottomTabBar bottom-nav" aria-label="App navigation">
+      <nav class="FloatingBottomNav BottomTabBar bottom-nav" aria-label="App navigation">
         <a class="is-current" href="/home" id="navHome">
           <span class="home-icon"></span>
           <small>Home</small>

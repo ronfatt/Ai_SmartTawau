@@ -118,7 +118,7 @@ function CaseCard({ caseId, category, location, meta, status, tone = "pending", 
   const detail = variant === "nearby" ? location : category;
   const secondary = variant === "nearby" ? meta : location;
   return `
-    <button class="CaseCard ${variant}-case-card mini-case-button" data-case-id="${escapeHtml(caseId)}" type="button">
+    <button class="PremiumSurfaceCard CaseCard ${variant}-case-card mini-case-button" data-case-id="${escapeHtml(caseId)}" type="button">
       <div><strong>${escapeHtml(title)}</strong><small>${escapeHtml(detail)}</small><small>${escapeHtml(secondary)}</small></div>
       <div>${StatusBadge(status, tone)}${variant !== "nearby" && meta ? `<time>${escapeHtml(meta)}</time>` : ""}</div>
     </button>
@@ -127,7 +127,7 @@ function CaseCard({ caseId, category, location, meta, status, tone = "pending", 
 
 function QuickActionCard({ id, title, subtitle, iconClass, variant = "" }) {
   return `
-    <button class="QuickActionCard action-card ${variant}" id="${escapeHtml(id)}" type="button">
+    <button class="ActionCard QuickActionCard action-card ${variant}" id="${escapeHtml(id)}" type="button">
       <span class="action-icon ${escapeHtml(iconClass)}"></span>
       <strong>${escapeHtml(title)}</strong>
       <small>${escapeHtml(subtitle)}</small>
@@ -137,10 +137,10 @@ function QuickActionCard({ id, title, subtitle, iconClass, variant = "" }) {
 
 function StatsCard({ title, label, stats }) {
   return `
-    <section class="StatsCard glance-card" aria-label="${escapeHtml(title)}">
+    <section class="PremiumSurfaceCard StatsCard glance-card" aria-label="${escapeHtml(title)}">
       <div class="glance-head"><h2>${escapeHtml(title)}</h2><span>${escapeHtml(label)}</span></div>
       <div class="glance-stats">
-        ${stats.map((stat) => `<div><small>${escapeHtml(stat.label)}</small><strong>${escapeHtml(String(stat.value))}</strong></div>`).join("")}
+        ${stats.map((stat) => `<div class="StatMetric"><small>${escapeHtml(stat.label)}</small><strong>${escapeHtml(String(stat.value))}</strong></div>`).join("")}
       </div>
     </section>
   `;
@@ -178,7 +178,7 @@ function NotificationItem({ caseId, title, time, date, tone = "success", icon = 
 
 function BottomTabBar(items) {
   return `
-    <nav class="BottomTabBar bottom-nav" aria-label="App navigation">
+    <nav class="FloatingBottomNav BottomTabBar bottom-nav" aria-label="App navigation">
       ${items
         .map(
           (item) => `
@@ -219,9 +219,9 @@ function renderMockData() {
 
   if (glanceStats) {
     glanceStats.innerHTML = `
-      <div><span class="stat-icon stat-icon--reported"></span><small>Issues Reported</small><strong>${MOCK_DATA.stats.issuesReported}</strong></div>
-      <div><span class="stat-icon stat-icon--progress"></span><small>In Progress</small><strong>${MOCK_DATA.stats.inProgress}</strong></div>
-      <div><span class="stat-icon stat-icon--resolved"></span><small>Resolved</small><strong>${MOCK_DATA.stats.resolved}</strong></div>
+      <div class="StatMetric"><span class="stat-icon stat-icon--reported"></span><small>Issues Reported</small><strong>${MOCK_DATA.stats.issuesReported}</strong></div>
+      <div class="StatMetric"><span class="stat-icon stat-icon--progress"></span><small>In Progress</small><strong>${MOCK_DATA.stats.inProgress}</strong></div>
+      <div class="StatMetric"><span class="stat-icon stat-icon--resolved"></span><small>Resolved</small><strong>${MOCK_DATA.stats.resolved}</strong></div>
     `;
   }
 
