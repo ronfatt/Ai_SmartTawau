@@ -70,6 +70,64 @@ const MOCK_DATA = {
 };
 let latestCaseNumber = MOCK_DATA.case.caseNumber;
 
+const ADMIN_CASES = [
+  {
+    ...MOCK_DATA.case,
+    department: "Jabatan Kerja Raya",
+    area: "Jalan Apas",
+    priority: "Tinggi",
+    sla: "18 jam lagi",
+    officer: "Belum ditugaskan",
+    citizenPhone: "0123456789",
+    source: "Aplikasi Awam",
+  },
+  {
+    caseNumber: "TAW-2026-000129",
+    category: "Sampah",
+    location: "Kawasan Kubota, Tawau",
+    status: "Diterima",
+    reportedAt: "03 Jun 2026, 10:18 pagi",
+    description: "Longgokan sampah tidak dikutip berhampiran kedai.",
+    summary: "Sampah dilaporkan di kawasan Kubota. Perlu semakan kutipan.",
+    department: "Jabatan Kebersihan",
+    area: "Kubota",
+    priority: "Sederhana",
+    sla: "23 jam lagi",
+    officer: "Unit Kebersihan Zon A",
+    source: "Aplikasi Awam",
+  },
+  {
+    caseNumber: "TAW-2026-000130",
+    category: "Lampu Jalan",
+    location: "Taman Semarak, Tawau",
+    status: "Perlu Tindakan",
+    reportedAt: "03 Jun 2026, 11:02 pagi",
+    description: "Lampu jalan tidak berfungsi sejak dua malam lalu.",
+    summary: "Lampu jalan tidak berfungsi di Taman Semarak. Perlu pemeriksaan teknikal.",
+    department: "Jabatan Kejuruteraan",
+    area: "Taman Semarak",
+    priority: "Tinggi",
+    sla: "8 jam lagi",
+    officer: "Unit Lampu Jalan",
+    source: "Aplikasi Awam",
+  },
+  {
+    caseNumber: "TAW-2026-000097",
+    category: "Saliran",
+    location: "Kawasan Fajar, Tawau",
+    status: "Selesai",
+    reportedAt: "02 Jun 2026, 04:45 petang",
+    description: "Longkang tersumbat selepas hujan lebat.",
+    summary: "Saliran tersumbat di Fajar telah dibersihkan.",
+    department: "Jabatan Saliran",
+    area: "Fajar",
+    priority: "Rendah",
+    sla: "Selesai",
+    officer: "Unit Saliran Zon Tengah",
+    source: "Telefon / Kaunter",
+  },
+];
+
 function escapeHtml(value) {
   return value
     .replaceAll("&", "&amp;")
@@ -210,6 +268,12 @@ function statusTone(status) {
   return "pending";
 }
 
+function priorityTone(priority) {
+  if (priority === "Tinggi") return "warning";
+  if (priority === "Rendah") return "success";
+  return "pending";
+}
+
 function renderMockData() {
   if (categoryGrid) {
     categoryGrid.innerHTML = MOCK_DATA.categories
@@ -249,7 +313,7 @@ function reportRouteForPage(pageNumber) {
 
 function showPage(pageNumber, options = {}) {
   currentPage = pageNumber;
-  appShell.classList.remove("is-home", "is-welcome");
+  appShell.classList.remove("is-home", "is-welcome", "is-admin");
   appShell.classList.remove("is-utility", "is-submitted");
   appShell.classList.add("is-reporting");
   form.style.display = "";
@@ -325,7 +389,7 @@ function setActiveNav(activeItem) {
 }
 
 function focusReportStart(options = {}) {
-  appShell.classList.remove("is-home", "is-welcome");
+  appShell.classList.remove("is-home", "is-welcome", "is-admin");
   appShell.classList.remove("is-utility");
   form.style.display = "";
   document.querySelector(".progress-panel").style.display = "";
@@ -340,7 +404,7 @@ function showHome(options = {}) {
   form.style.display = "";
   document.querySelector(".progress-panel").style.display = "";
   showPage(1, { skipRoute: true });
-  appShell.classList.remove("is-reporting", "is-submitted", "is-utility", "is-welcome");
+  appShell.classList.remove("is-reporting", "is-submitted", "is-utility", "is-welcome", "is-admin");
   appShell.classList.add("is-home");
   if (!options.skipRoute) updateRoute("/home");
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -348,7 +412,7 @@ function showHome(options = {}) {
 }
 
 function showUtility(type, options = {}) {
-  appShell.classList.remove("is-home", "is-reporting", "is-submitted", "is-welcome");
+  appShell.classList.remove("is-home", "is-reporting", "is-submitted", "is-welcome", "is-admin");
   appShell.classList.add("is-utility");
   resultPanel.classList.remove("is-visible");
   form.style.display = "";
@@ -510,11 +574,396 @@ function showUtility(type, options = {}) {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+function adminNavItem(label, route, currentRoute) {
+  const active = route === currentRoute || (route === "/admin/cases" && currentRoute.startsWith("/admin/case/"));
+  return `<button class="${active ? "is-active" : ""}" data-admin-route="${escapeHtml(route)}" type="button">${escapeHtml(label)}</button>`;
+}
+
+function AdminMetric({ label, value, tone = "" }) {
+  return `
+    <div class="admin-metric ${tone ? `admin-metric--${tone}` : ""}">
+      <span>${escapeHtml(label)}</span>
+      <strong>${escapeHtml(String(value))}</strong>
+    </div>
+  `;
+}
+
+function AdminCaseRow(item) {
+  return `
+    <button class="admin-case-row" data-admin-case="${escapeHtml(item.caseNumber)}" type="button">
+      <div>
+        <strong>${escapeHtml(item.caseNumber)}</strong>
+        <span>${escapeHtml(item.category)} · ${escapeHtml(item.area)}</span>
+      </div>
+      <span>${escapeHtml(item.department)}</span>
+      <span>${escapeHtml(item.reportedAt)}</span>
+      <span>${StatusBadge(item.priority, priorityTone(item.priority))}</span>
+      <span>${StatusBadge(item.status, statusTone(item.status))}</span>
+    </button>
+  `;
+}
+
+function adminLayout(content, currentRoute = "/admin") {
+  return `
+    <section class="admin-shell">
+      <aside class="admin-sidebar">
+        <div class="admin-brand">
+          <span class="brand-mark"><img src="assets/logo-mark.jpg" alt="" /></span>
+          <div>
+            <strong>Tawau Aduan</strong>
+            <small>Portal Pegawai</small>
+          </div>
+        </div>
+        <nav class="admin-nav" aria-label="Navigasi portal pegawai">
+          ${adminNavItem("Papan Pemuka", "/admin", currentRoute)}
+          ${adminNavItem("Pengurusan Kes", "/admin/cases", currentRoute)}
+          ${adminNavItem("Jabatan", "/admin/departments", currentRoute)}
+          ${adminNavItem("Analitik", "/admin/analytics", currentRoute)}
+        </nav>
+        <div class="admin-user-card">
+          <small>Log masuk sebagai</small>
+          <strong>Urusetia Aduan</strong>
+          <span>Majlis Perbandaran Tawau</span>
+        </div>
+      </aside>
+      <div class="admin-main">
+        <header class="admin-topbar">
+          <div>
+            <span>Portal Dalaman</span>
+            <strong>Operasi Aduan Tawau</strong>
+          </div>
+          <button data-admin-route="/home" type="button">Lihat Aplikasi Awam</button>
+        </header>
+        ${content}
+      </div>
+    </section>
+  `;
+}
+
+function showAdminLogin(options = {}) {
+  appShell.classList.remove("is-home", "is-reporting", "is-submitted", "is-utility", "is-welcome");
+  appShell.classList.add("is-admin");
+  form.style.display = "none";
+  document.querySelector(".progress-panel").style.display = "none";
+  resultPanel.classList.remove("is-visible");
+
+  utilityPanel.innerHTML = `
+    <section class="admin-login-screen">
+      <div class="admin-login-card">
+        <span class="brand-mark"><img src="assets/logo-mark.jpg" alt="" /></span>
+        <p>Portal Dalaman Pegawai</p>
+        <h1>Tawau Aduan</h1>
+        <label><span>ID Pegawai</span><input value="pegawai.tawau@mp.tawau.gov.my" type="email" /></label>
+        <label><span>Kata Laluan</span><input value="demo1234" type="password" /></label>
+        <button data-admin-route="/admin" type="button">Log Masuk</button>
+        <small>Akses terhad kepada pegawai yang diberi kuasa.</small>
+      </div>
+    </section>
+  `;
+  if (!options.skipRoute) updateRoute("/admin/login");
+  setActiveNav(null);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function showAdminDashboard(options = {}) {
+  appShell.classList.remove("is-home", "is-reporting", "is-submitted", "is-utility", "is-welcome");
+  appShell.classList.add("is-admin");
+  form.style.display = "none";
+  document.querySelector(".progress-panel").style.display = "none";
+  resultPanel.classList.remove("is-visible");
+
+  const pendingCount = ADMIN_CASES.filter((item) => item.status !== "Selesai").length;
+  const warningCount = ADMIN_CASES.filter((item) => item.priority === "Tinggi" || item.status === "Perlu Tindakan").length;
+  const content = `
+    <section class="admin-page-head">
+      <div>
+        <p>Selamat pagi, pegawai bertugas.</p>
+        <h1>Papan Pemuka Aduan</h1>
+      </div>
+      <button data-admin-route="/admin/cases" type="button">Buka Senarai Kes</button>
+    </section>
+
+    <section class="admin-metrics-grid">
+      ${AdminMetric({ label: "Aduan Hari Ini", value: 24, tone: "blue" })}
+      ${AdminMetric({ label: "Belum Selesai", value: pendingCount, tone: "orange" })}
+      ${AdminMetric({ label: "SLA Berisiko", value: warningCount, tone: "red" })}
+      ${AdminMetric({ label: "Selesai Bulan Ini", value: 76, tone: "green" })}
+    </section>
+
+    <section class="admin-dashboard-grid">
+      <div class="admin-card admin-card--wide">
+        <div class="admin-section-head">
+          <h2>Kes Memerlukan Perhatian</h2>
+          <button data-admin-route="/admin/cases" type="button">Lihat Semua</button>
+        </div>
+        <div class="admin-case-table">
+          <div class="admin-case-row admin-case-row--head">
+            <span>No. Kes</span><span>Jabatan</span><span>Masa</span><span>Prioriti</span><span>Status</span>
+          </div>
+          ${ADMIN_CASES.slice(0, 4).map(AdminCaseRow).join("")}
+        </div>
+      </div>
+      <div class="admin-card">
+        <div class="admin-section-head">
+          <h2>Agihan Jabatan</h2>
+        </div>
+        <div class="admin-dept-list">
+          <div><span>Kerja Raya</span><strong>38</strong></div>
+          <div><span>Kebersihan</span><strong>31</strong></div>
+          <div><span>Saliran</span><strong>19</strong></div>
+          <div><span>Kejuruteraan</span><strong>12</strong></div>
+        </div>
+      </div>
+      <div class="admin-card">
+        <div class="admin-section-head">
+          <h2>Kawasan Panas</h2>
+        </div>
+        <div class="admin-heat-map">
+          <span>Jalan Apas</span>
+          <span>Kubota</span>
+          <span>Fajar</span>
+          <span>Taman Semarak</span>
+        </div>
+      </div>
+    </section>
+  `;
+
+  utilityPanel.innerHTML = adminLayout(content, "/admin");
+  if (!options.skipRoute) updateRoute("/admin");
+  setActiveNav(null);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function showAdminCases(options = {}) {
+  appShell.classList.remove("is-home", "is-reporting", "is-submitted", "is-utility", "is-welcome");
+  appShell.classList.add("is-admin");
+  form.style.display = "none";
+  document.querySelector(".progress-panel").style.display = "none";
+  resultPanel.classList.remove("is-visible");
+
+  const content = `
+    <section class="admin-page-head">
+      <div>
+        <p>Pengurusan Kes</p>
+        <h1>Semua Aduan</h1>
+      </div>
+      <button data-admin-route="/admin" type="button">Kembali ke Dashboard</button>
+    </section>
+    <section class="admin-card">
+      <div class="admin-filters">
+        <label><span>Cari No. Kes</span><input value="TAW-2026" type="search" /></label>
+        <label><span>Status</span><select><option>Semua Status</option><option>Sedang Diproses</option><option>Perlu Tindakan</option><option>Selesai</option></select></label>
+        <label><span>Jabatan</span><select><option>Semua Jabatan</option><option>Jabatan Kerja Raya</option><option>Jabatan Kebersihan</option></select></label>
+        <label><span>Prioriti</span><select><option>Semua Prioriti</option><option>Tinggi</option><option>Sederhana</option><option>Rendah</option></select></label>
+      </div>
+      <div class="admin-case-table admin-case-table--full">
+        <div class="admin-case-row admin-case-row--head">
+          <span>No. Kes</span><span>Jabatan</span><span>Masa</span><span>Prioriti</span><span>Status</span>
+        </div>
+        ${ADMIN_CASES.map(AdminCaseRow).join("")}
+      </div>
+    </section>
+  `;
+
+  utilityPanel.innerHTML = adminLayout(content, "/admin/cases");
+  if (!options.skipRoute) updateRoute("/admin/cases");
+  setActiveNav(null);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function showAdminCaseDetails(caseId = MOCK_DATA.case.caseNumber, options = {}) {
+  const item = ADMIN_CASES.find((caseItem) => caseItem.caseNumber === caseId) || ADMIN_CASES[0];
+  appShell.classList.remove("is-home", "is-reporting", "is-submitted", "is-utility", "is-welcome");
+  appShell.classList.add("is-admin");
+  form.style.display = "none";
+  document.querySelector(".progress-panel").style.display = "none";
+  resultPanel.classList.remove("is-visible");
+
+  const content = `
+    <section class="admin-page-head">
+      <div>
+        <p>Butiran Kes</p>
+        <h1>${escapeHtml(item.caseNumber)}</h1>
+      </div>
+      <button data-admin-route="/admin/cases" type="button">Kembali ke Senarai</button>
+    </section>
+
+    <section class="admin-detail-grid">
+      <div class="admin-card admin-card--wide">
+        <div class="admin-case-title">
+          <div>
+            <span>${escapeHtml(item.category)}</span>
+            <h2>${escapeHtml(item.location)}</h2>
+          </div>
+          <div>${StatusBadge(item.status, statusTone(item.status))}</div>
+        </div>
+        <div class="admin-issue-media">
+          <div class="issue-thumb"></div>
+          <div class="map-card compact-map">
+            <div class="map-grid"></div>
+            <div class="map-pin"></div>
+            <p>${escapeHtml(item.area)}</p>
+          </div>
+        </div>
+        <div class="admin-note-box">
+          <span>Ringkasan AI</span>
+          <p>${escapeHtml(item.summary)}</p>
+        </div>
+        <div class="admin-note-box">
+          <span>Penerangan Penduduk</span>
+          <p>${escapeHtml(item.description)}</p>
+        </div>
+        <div class="admin-officer-log">
+          <h3>Log Dalaman</h3>
+          <div><span>09:41 pagi</span><p>Aduan diterima melalui aplikasi awam.</p></div>
+          <div><span>11:20 pagi</span><p>Semakan awal dibuat oleh urusetia.</p></div>
+          <div><span>01:15 petang</span><p>Kes dicadangkan kepada ${escapeHtml(item.department)}.</p></div>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-section-head">
+          <h2>Tindakan Pegawai</h2>
+        </div>
+        <div class="admin-action-strip">
+          <button type="button">Sahkan</button>
+          <button type="button">Tugaskan</button>
+          <button type="button">Tutup Kes</button>
+        </div>
+        <label class="admin-field"><span>Status</span><select><option>${escapeHtml(item.status)}</option><option>Diterima</option><option>Disahkan</option><option>Ditugaskan</option><option>Sedang Diproses</option><option>Selesai</option></select></label>
+        <label class="admin-field"><span>Jabatan</span><select><option>${escapeHtml(item.department)}</option><option>Jabatan Kerja Raya</option><option>Jabatan Kebersihan</option><option>Jabatan Saliran</option></select></label>
+        <label class="admin-field"><span>Kemas Kini Kepada Penduduk</span><textarea rows="4">Kes anda sedang diproses oleh jabatan berkaitan.</textarea></label>
+        <button class="admin-primary-action" type="button">Simpan Kemas Kini</button>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-section-head">
+          <h2>Maklumat Operasi</h2>
+        </div>
+        <div class="admin-info-list">
+          <div><span>Dilaporkan</span><strong>${escapeHtml(item.reportedAt)}</strong></div>
+          <div><span>Jabatan</span><strong>${escapeHtml(item.department)}</strong></div>
+          <div><span>Pegawai / Unit</span><strong>${escapeHtml(item.officer)}</strong></div>
+          <div><span>Prioriti</span><strong>${escapeHtml(item.priority)}</strong></div>
+          <div><span>SLA</span><strong>${escapeHtml(item.sla)}</strong></div>
+          <div><span>Sumber</span><strong>${escapeHtml(item.source)}</strong></div>
+          <div><span>No. Telefon</span><strong>Disembunyikan</strong></div>
+        </div>
+      </div>
+    </section>
+  `;
+
+  utilityPanel.innerHTML = adminLayout(content, "/admin/cases");
+  if (!options.skipRoute) updateRoute(`/admin/case/${item.caseNumber}`);
+  setActiveNav(null);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function showAdminDepartments(options = {}) {
+  appShell.classList.remove("is-home", "is-reporting", "is-submitted", "is-utility", "is-welcome");
+  appShell.classList.add("is-admin");
+  form.style.display = "none";
+  document.querySelector(".progress-panel").style.display = "none";
+  resultPanel.classList.remove("is-visible");
+
+  const content = `
+    <section class="admin-page-head">
+      <div>
+        <p>Jabatan & Tugasan</p>
+        <h1>Agihan Kerja</h1>
+      </div>
+      <button data-admin-route="/admin/cases" type="button">Lihat Kes Aktif</button>
+    </section>
+    <section class="admin-dashboard-grid">
+      <div class="admin-card admin-card--wide">
+        <div class="admin-section-head"><h2>Beban Kerja Jabatan</h2></div>
+        <div class="admin-bar-list">
+          <div style="--bar: 82%"><span>Jabatan Kerja Raya</span><strong>38 kes</strong></div>
+          <div style="--bar: 68%"><span>Jabatan Kebersihan</span><strong>31 kes</strong></div>
+          <div style="--bar: 46%"><span>Jabatan Saliran</span><strong>19 kes</strong></div>
+          <div style="--bar: 34%"><span>Jabatan Kejuruteraan</span><strong>12 kes</strong></div>
+        </div>
+      </div>
+      <div class="admin-card">
+        <div class="admin-section-head"><h2>SLA Jabatan</h2></div>
+        <div class="admin-info-list">
+          <div><span>Kerja Raya</span><strong>92%</strong></div>
+          <div><span>Kebersihan</span><strong>88%</strong></div>
+          <div><span>Saliran</span><strong>84%</strong></div>
+          <div><span>Kejuruteraan</span><strong>79%</strong></div>
+        </div>
+      </div>
+      <div class="admin-card">
+        <div class="admin-section-head"><h2>Unit Bertugas</h2></div>
+        <div class="admin-info-list">
+          <div><span>Zon A</span><strong>Aktif</strong></div>
+          <div><span>Zon Tengah</span><strong>Aktif</strong></div>
+          <div><span>Unit Lampu Jalan</span><strong>Berjadual</strong></div>
+        </div>
+      </div>
+    </section>
+  `;
+
+  utilityPanel.innerHTML = adminLayout(content, "/admin/departments");
+  if (!options.skipRoute) updateRoute("/admin/departments");
+  setActiveNav(null);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function showAdminAnalytics(options = {}) {
+  appShell.classList.remove("is-home", "is-reporting", "is-submitted", "is-utility", "is-welcome");
+  appShell.classList.add("is-admin");
+  form.style.display = "none";
+  document.querySelector(".progress-panel").style.display = "none";
+  resultPanel.classList.remove("is-visible");
+
+  const content = `
+    <section class="admin-page-head">
+      <div>
+        <p>Analitik Operasi</p>
+        <h1>Corak Aduan</h1>
+      </div>
+      <button data-admin-route="/admin/cases" type="button">Semak Senarai Kes</button>
+    </section>
+    <section class="admin-metrics-grid">
+      ${AdminMetric({ label: "Purata Masa Respons", value: "2.4j", tone: "blue" })}
+      ${AdminMetric({ label: "Kadar Selesai", value: "81%", tone: "green" })}
+      ${AdminMetric({ label: "Aduan Berulang", value: 14, tone: "orange" })}
+      ${AdminMetric({ label: "Kawasan Aktif", value: 7, tone: "red" })}
+    </section>
+    <section class="admin-dashboard-grid">
+      <div class="admin-card admin-card--wide">
+        <div class="admin-section-head"><h2>Kategori Tertinggi</h2></div>
+        <div class="admin-bar-list">
+          <div style="--bar: 86%"><span>Kerosakan Jalan</span><strong>42</strong></div>
+          <div style="--bar: 72%"><span>Sampah</span><strong>35</strong></div>
+          <div style="--bar: 54%"><span>Saliran</span><strong>24</strong></div>
+          <div style="--bar: 39%"><span>Lampu Jalan</span><strong>18</strong></div>
+        </div>
+      </div>
+      <div class="admin-card">
+        <div class="admin-section-head"><h2>Kawasan Tertinggi</h2></div>
+        <div class="admin-heat-map">
+          <span>Jalan Apas</span>
+          <span>Kubota</span>
+          <span>Fajar</span>
+          <span>Semarak</span>
+        </div>
+      </div>
+    </section>
+  `;
+
+  utilityPanel.innerHTML = adminLayout(content, "/admin/analytics");
+  if (!options.skipRoute) updateRoute("/admin/analytics");
+  setActiveNav(null);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
 function showCaseDetails(caseId = latestCaseNumber, options = {}) {
   const mockCase = MOCK_DATA.case;
   const activeCaseNumber = caseId === "TAW-2026-05123" ? mockCase.caseNumber : caseId || mockCase.caseNumber;
   latestCaseNumber = activeCaseNumber;
-  appShell.classList.remove("is-home", "is-reporting", "is-utility", "is-welcome");
+  appShell.classList.remove("is-home", "is-reporting", "is-utility", "is-welcome", "is-admin");
   appShell.classList.add("is-submitted");
   form.style.display = "none";
   document.querySelector(".progress-panel").style.display = "none";
@@ -617,6 +1066,12 @@ function handleRoute(path = window.location.pathname, options = {}) {
   if (path === "/profile") return showUtility("profile", { skipRoute: true });
   if (path === "/help") return showUtility("help", { skipRoute: true });
   if (path === "/privacy") return showUtility("privacy", { skipRoute: true });
+  if (path === "/admin/login") return showAdminLogin({ skipRoute: true });
+  if (path === "/admin") return showAdminDashboard({ skipRoute: true });
+  if (path === "/admin/cases") return showAdminCases({ skipRoute: true });
+  if (path === "/admin/departments") return showAdminDepartments({ skipRoute: true });
+  if (path === "/admin/analytics") return showAdminAnalytics({ skipRoute: true });
+  if (path.startsWith("/admin/case/")) return showAdminCaseDetails(path.split("/").pop(), { skipRoute: true });
   if (path.startsWith("/case/")) return showCaseDetails(path.split("/").pop(), { skipRoute: true });
   return showHome({ skipRoute: true });
 }
@@ -664,6 +1119,23 @@ descriptionInput.addEventListener("input", () => {
 });
 
 utilityPanel.addEventListener("click", (event) => {
+  const adminRoute = event.target.closest("[data-admin-route]");
+  if (adminRoute) {
+    const route = adminRoute.dataset.adminRoute;
+    if (route === "/home") showHome();
+    if (route === "/admin") showAdminDashboard();
+    if (route === "/admin/cases") showAdminCases();
+    if (route === "/admin/departments") showAdminDepartments();
+    if (route === "/admin/analytics") showAdminAnalytics();
+    return;
+  }
+
+  const adminCaseButton = event.target.closest("[data-admin-case]");
+  if (adminCaseButton) {
+    showAdminCaseDetails(adminCaseButton.dataset.adminCase);
+    return;
+  }
+
   const profileAction = event.target.closest("[data-profile-action]");
   if (profileAction) {
     const action = profileAction.dataset.profileAction;
