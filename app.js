@@ -39,27 +39,27 @@ let currentPage = 1;
 let coordinates = null;
 const MOCK_DATA = {
   categories: [
-    { value: "Garbage", label: "Garbage", icon: "garbage" },
-    { value: "Road Damage", label: "Road Damage", icon: "road" },
-    { value: "Drainage", label: "Drainage", icon: "drain" },
-    { value: "Street Light", label: "Street Light", icon: "light" },
-    { value: "Public Facility", label: "Public Facility", icon: "facility" },
-    { value: "Cleanliness", label: "Cleanliness", icon: "clean" },
+    { value: "Sampah", label: "Sampah", icon: "garbage" },
+    { value: "Kerosakan Jalan", label: "Kerosakan Jalan", icon: "road" },
+    { value: "Saliran", label: "Saliran", icon: "drain" },
+    { value: "Lampu Jalan", label: "Lampu Jalan", icon: "light" },
+    { value: "Kemudahan Awam", label: "Kemudahan Awam", icon: "facility" },
+    { value: "Kebersihan", label: "Kebersihan", icon: "clean" },
   ],
   case: {
     caseNumber: "TAW-2026-000128",
-    category: "Road Damage",
+    category: "Kerosakan Jalan",
     location: "Jalan Apas, 91000 Tawau, Sabah, Malaysia",
-    status: "In Progress",
-    reportedAt: "03 June 2026, 09:41 AM",
-    description: "Large pothole near roadside causing traffic risk.",
-    summary: "Road damage reported at Jalan Apas. Photo attached. Requires inspection.",
+    status: "Sedang Diproses",
+    reportedAt: "03 Jun 2026, 09:41 pagi",
+    description: "Lubang besar di tepi jalan yang boleh membahayakan trafik.",
+    summary: "Kerosakan jalan dilaporkan di Jalan Apas. Foto dilampirkan. Memerlukan pemeriksaan.",
     timeline: [
-      { title: "Received", description: "Your complaint has been received.", state: "done" },
-      { title: "Verified", description: "Issue verified by our team.", state: "done" },
-      { title: "Assigned", description: "Assigned to relevant department.", state: "done" },
-      { title: "In Progress", description: "Work is in progress.", state: "current" },
-      { title: "Completed", description: "We will update you once completed.", state: "future" },
+      { title: "Diterima", description: "Aduan anda telah diterima.", state: "done" },
+      { title: "Disahkan", description: "Isu telah disahkan oleh pasukan kami.", state: "done" },
+      { title: "Ditugaskan", description: "Ditugaskan kepada jabatan berkaitan.", state: "done" },
+      { title: "Sedang Diproses", description: "Kerja sedang dijalankan.", state: "current" },
+      { title: "Selesai", description: "Kami akan memaklumkan anda selepas selesai.", state: "future" },
     ],
   },
   stats: {
@@ -151,7 +151,7 @@ function PhotoUploadCard({ inputId = "photoInput", previewId = "photoPreview" } 
     <label class="PhotoUploadCard add-photo-card" for="${escapeHtml(inputId)}">
       <input id="${escapeHtml(inputId)}" name="photo" type="file" accept="image/*" capture="environment" />
       <span class="camera-mini-icon"></span>
-      <strong>Add Photo</strong>
+      <strong>Tambah Foto</strong>
       <img id="${escapeHtml(previewId)}" alt="" />
     </label>
   `;
@@ -160,7 +160,7 @@ function PhotoUploadCard({ inputId = "photoInput", previewId = "photoPreview" } 
 function AddressCard({ textareaId = "locationText", value }) {
   return `
     <label class="AddressCard address-card">
-      <span>Address</span>
+      <span>Alamat</span>
       <textarea id="${escapeHtml(textareaId)}" name="location" rows="3" required>${escapeHtml(value)}</textarea>
     </label>
   `;
@@ -170,7 +170,7 @@ function NotificationItem({ caseId, title, time, date, tone = "success", icon = 
   return `
     <button class="NotificationItem notification-item notification-item--${tone} mini-case-button" data-case-id="${escapeHtml(caseId)}" type="button">
       <span class="notification-status-icon">${escapeHtml(icon)}</span>
-      <div><strong>${escapeHtml(title)}</strong><small>Case No. ${escapeHtml(caseId)}</small>${badge ? StatusBadge(badge, badgeTone) : ""}</div>
+      <div><strong>${escapeHtml(title)}</strong><small>No. Kes ${escapeHtml(caseId)}</small>${badge ? StatusBadge(badge, badgeTone) : ""}</div>
       <time><b>${escapeHtml(time)}</b><span>${escapeHtml(date)}</span></time>
     </button>
   `;
@@ -178,7 +178,7 @@ function NotificationItem({ caseId, title, time, date, tone = "success", icon = 
 
 function BottomTabBar(items) {
   return `
-    <nav class="FloatingBottomNav BottomTabBar bottom-nav" aria-label="App navigation">
+    <nav class="FloatingBottomNav BottomTabBar bottom-nav" aria-label="Navigasi aplikasi">
       ${items
         .map(
           (item) => `
@@ -197,16 +197,16 @@ function ScreenHeader({ title, backId, helpId, backAttrs = "" }) {
   const leftAttrs = backId ? `id="${escapeHtml(backId)}"` : backAttrs;
   return `
     <div class="ScreenHeader screen-topbar">
-      <button class="screen-icon-btn" type="button" ${leftAttrs} aria-label="Back">‹</button>
+      <button class="screen-icon-btn" type="button" ${leftAttrs} aria-label="Kembali">‹</button>
       <h2>${escapeHtml(title)}</h2>
-      <button class="screen-icon-btn" type="button" id="${escapeHtml(helpId)}" aria-label="Help">?</button>
+      <button class="screen-icon-btn" type="button" id="${escapeHtml(helpId)}" aria-label="Bantuan">?</button>
     </div>
   `;
 }
 
 function statusTone(status) {
-  if (status === "Completed" || status === "Resolved") return "success";
-  if (status === "Action Needed") return "warning";
+  if (["Completed", "Resolved", "Selesai", "Telah Diselesaikan"].includes(status)) return "success";
+  if (["Action Needed", "Perlu Tindakan", "Maklumat Diperlukan"].includes(status)) return "warning";
   return "pending";
 }
 
@@ -219,9 +219,9 @@ function renderMockData() {
 
   if (glanceStats) {
     glanceStats.innerHTML = `
-      <div class="StatMetric"><span class="stat-icon stat-icon--reported"></span><small>Issues Reported</small><strong>${MOCK_DATA.stats.issuesReported}</strong></div>
-      <div class="StatMetric"><span class="stat-icon stat-icon--progress"></span><small>In Progress</small><strong>${MOCK_DATA.stats.inProgress}</strong></div>
-      <div class="StatMetric"><span class="stat-icon stat-icon--resolved"></span><small>Resolved</small><strong>${MOCK_DATA.stats.resolved}</strong></div>
+      <div class="StatMetric"><span class="stat-icon stat-icon--reported"></span><small>Aduan Dilaporkan</small><strong>${MOCK_DATA.stats.issuesReported}</strong></div>
+      <div class="StatMetric"><span class="stat-icon stat-icon--progress"></span><small>Sedang Diproses</small><strong>${MOCK_DATA.stats.inProgress}</strong></div>
+      <div class="StatMetric"><span class="stat-icon stat-icon--resolved"></span><small>Selesai</small><strong>${MOCK_DATA.stats.resolved}</strong></div>
     `;
   }
 
@@ -272,7 +272,7 @@ function showPage(pageNumber, options = {}) {
 
 function selectedCategory() {
   const checked = document.querySelector('input[name="category"]:checked');
-  return checked ? checked.value : "Not selected";
+  return checked ? checked.value : "Belum dipilih";
 }
 
 function renderSummary() {
@@ -284,19 +284,19 @@ function renderSummary() {
   const category = escapeHtml(selectedCategory() || MOCK_DATA.case.category);
 
   summaryCard.innerHTML = `
-    <div class="review-status">${StatusBadge("Ready to Submit", "success")}</div>
+    <div class="review-status">${StatusBadge("Sedia Dihantar", "success")}</div>
     <div class="review-main">
       <div class="review-thumb ${photoInput.files.length ? "has-upload" : ""}">
-        ${photoInput.files.length && photoPreview.src ? `<img src="${photoPreview.src}" alt="Uploaded issue" />` : `<span class="camera-mini-icon"></span>`}
+        ${photoInput.files.length && photoPreview.src ? `<img src="${photoPreview.src}" alt="Foto isu dimuat naik" />` : `<span class="camera-mini-icon"></span>`}
       </div>
       <div class="review-details">
-        <div class="summary-row"><span>Category</span><strong>${category}</strong></div>
-        <div class="summary-row"><span>Address</span><strong>${locationDetail}</strong></div>
-        <div class="summary-row summary-row--stack"><span>Description</span><strong>${description}</strong></div>
+        <div class="summary-row"><span>Kategori</span><strong>${category}</strong></div>
+        <div class="summary-row"><span>Alamat</span><strong>${locationDetail}</strong></div>
+        <div class="summary-row summary-row--stack"><span>Penerangan</span><strong>${description}</strong></div>
       </div>
     </div>
     <div class="ai-summary">
-      <span>Issue Summary:</span>
+      <span>Ringkasan Isu:</span>
       <p>${escapeHtml(MOCK_DATA.case.summary)}</p>
     </div>
   `;
@@ -357,39 +357,39 @@ function showUtility(type, options = {}) {
   const mockCase = MOCK_DATA.case;
   const recentCases = [
     { caseId: mockCase.caseNumber, category: mockCase.category, location: mockCase.location, meta: "03 Jun", status: mockCase.status, tone: statusTone(mockCase.status) },
-    { caseId: "TAW-2026-000097", category: "Garbage", location: "Kubota area", meta: "02 Jun", status: "Completed", tone: "success" },
-    { caseId: "TAW-2026-000082", category: "Drainage", location: "Fajar area", meta: "01 Jun", status: "Action Needed", tone: "warning" },
+    { caseId: "TAW-2026-000097", category: "Sampah", location: "Kawasan Kubota", meta: "02 Jun", status: "Selesai", tone: "success" },
+    { caseId: "TAW-2026-000082", category: "Saliran", location: "Kawasan Fajar", meta: "01 Jun", status: "Perlu Tindakan", tone: "warning" },
   ];
   const nearbyCases = [
-    { caseId: mockCase.caseNumber, category: mockCase.category, location: "Jalan Apas area", meta: "1.2 km away · 03 Jun", status: mockCase.status, tone: statusTone(mockCase.status), variant: "nearby" },
-    { caseId: "TAW-2026-000097", category: "Garbage", location: "Kubota area", meta: "1.8 km away · 02 Jun", status: "Completed", tone: "success", variant: "nearby" },
-    { caseId: "TAW-2026-000082", category: "Drainage", location: "Fajar area", meta: "2.1 km away · 01 Jun", status: "Action Needed", tone: "warning", variant: "nearby" },
-    { caseId: "TAW-2026-000087", category: "Street Light", location: "Taman Semarak area", meta: "2.4 km away · 01 Jun", status: "Pending", tone: "pending", variant: "nearby" },
+    { caseId: mockCase.caseNumber, category: mockCase.category, location: "Kawasan Jalan Apas", meta: "1.2 km dari sini · 03 Jun", status: mockCase.status, tone: statusTone(mockCase.status), variant: "nearby" },
+    { caseId: "TAW-2026-000097", category: "Sampah", location: "Kawasan Kubota", meta: "1.8 km dari sini · 02 Jun", status: "Selesai", tone: "success", variant: "nearby" },
+    { caseId: "TAW-2026-000082", category: "Saliran", location: "Kawasan Fajar", meta: "2.1 km dari sini · 01 Jun", status: "Perlu Tindakan", tone: "warning", variant: "nearby" },
+    { caseId: "TAW-2026-000087", category: "Lampu Jalan", location: "Kawasan Taman Semarak", meta: "2.4 km dari sini · 01 Jun", status: "Menunggu", tone: "pending", variant: "nearby" },
   ];
   const notifications = [
-    { caseId: mockCase.caseNumber, title: "Your complaint has been received", time: "09:41 AM", date: "03 Jun" },
-    { caseId: mockCase.caseNumber, title: "Your complaint has been verified", time: "11:20 AM", date: "03 Jun" },
-    { caseId: mockCase.caseNumber, title: "Your complaint has been assigned", time: "01:15 PM", date: "03 Jun", tone: "info", icon: "👥" },
-    { caseId: mockCase.caseNumber, title: "Work is in progress", time: "09:30 AM", date: "04 Jun", tone: "info", icon: "⚙" },
-    { caseId: "TAW-2026-000097", title: "Your complaint has been completed", time: "04:45 PM", date: "04 Jun", badge: "Completed", badgeTone: "success" },
-    { caseId: "TAW-2026-000082", title: "More information required", time: "10:05 AM", date: "05 Jun", tone: "warning", icon: "!", badge: "Action Needed", badgeTone: "warning" },
+    { caseId: mockCase.caseNumber, title: "Aduan anda telah diterima", time: "09:41 pagi", date: "03 Jun" },
+    { caseId: mockCase.caseNumber, title: "Aduan anda telah disahkan", time: "11:20 pagi", date: "03 Jun" },
+    { caseId: mockCase.caseNumber, title: "Aduan anda telah ditugaskan", time: "01:15 petang", date: "03 Jun", tone: "info", icon: "👥" },
+    { caseId: mockCase.caseNumber, title: "Kerja sedang dijalankan", time: "09:30 pagi", date: "04 Jun", tone: "info", icon: "⚙" },
+    { caseId: "TAW-2026-000097", title: "Aduan anda telah selesai", time: "04:45 petang", date: "04 Jun", badge: "Selesai", badgeTone: "success" },
+    { caseId: "TAW-2026-000082", title: "Maklumat lanjut diperlukan", time: "10:05 pagi", date: "05 Jun", tone: "warning", icon: "!", badge: "Perlu Tindakan", badgeTone: "warning" },
   ];
 
   const screens = {
     track: `
       <section class="utility-card">
-        <h2>Track Complaint</h2>
-        <p>Track without complex login. Paste your case number below.</p>
+        <h2>Semak Aduan</h2>
+        <p>Semak tanpa log masuk yang rumit. Tampal nombor kes anda di bawah.</p>
         <div class="case-search track-search">
           <label>
-            <span>Enter case number</span>
-            <input type="text" inputmode="text" autocapitalize="characters" spellcheck="false" value="${mockCase.caseNumber}" placeholder="Example: ${mockCase.caseNumber}" />
+            <span>Masukkan nombor kes</span>
+            <input type="text" inputmode="text" autocapitalize="characters" spellcheck="false" value="${mockCase.caseNumber}" placeholder="Contoh: ${mockCase.caseNumber}" />
           </label>
-          ${ButtonPrimary("Track Case", { "data-case-id": mockCase.caseNumber })}
+          ${ButtonPrimary("Semak Kes", { "data-case-id": mockCase.caseNumber })}
         </div>
       </section>
       <section class="utility-card">
-        <h2>Recent Cases</h2>
+        <h2>Kes Terkini</h2>
         <div class="case-list recent-case-list">
           ${recentCases.map((item) => CaseCard(item)).join("")}
         </div>
@@ -397,24 +397,24 @@ function showUtility(type, options = {}) {
     `,
     nearby: `
       <section class="utility-card nearby-screen">
-        <h2>Nearby Issues</h2>
-        <p>Check nearby public reports before submitting a duplicate complaint.</p>
+        <h2>Aduan Berdekatan</h2>
+        <p>Semak aduan awam berhampiran sebelum menghantar aduan yang sama.</p>
         <div class="map-card compact-map nearby-map">
           <div class="map-grid"></div>
           <div class="map-pin"></div>
-          <p>Public issue map around Jalan Apas, Fajar and Kubota.</p>
+          <p>Peta aduan awam sekitar Jalan Apas, Fajar dan Kubota.</p>
         </div>
-        <div class="filter-chips" aria-label="Nearby issue filters">
-          <button class="is-active" type="button">All</button>
-          <button type="button">Garbage</button>
-          <button type="button">Road Damage</button>
-          <button type="button">Drainage</button>
-          <button type="button">Street Light</button>
+        <div class="filter-chips" aria-label="Tapisan aduan berdekatan">
+          <button class="is-active" type="button">Semua</button>
+          <button type="button">Sampah</button>
+          <button type="button">Kerosakan Jalan</button>
+          <button type="button">Saliran</button>
+          <button type="button">Lampu Jalan</button>
         </div>
         <div class="duplicate-hint">
-          <strong>This issue may already be reported.</strong>
-          <span>Follow this case instead?</span>
-          <button data-case-id="${mockCase.caseNumber}" type="button">Follow Case</button>
+          <strong>Isu ini mungkin telah dilaporkan.</strong>
+          <span>Ikuti kes ini?</span>
+          <button data-case-id="${mockCase.caseNumber}" type="button">Ikuti Kes</button>
         </div>
         <div class="case-list nearby-case-list">
           ${nearbyCases.map((item) => CaseCard(item)).join("")}
@@ -423,21 +423,21 @@ function showUtility(type, options = {}) {
     `,
     help: `
       <section class="utility-card">
-        <h2>Help / FAQ</h2>
-        <p>Quick answers for residents using Tawau Aduan.</p>
+        <h2>Bantuan / Soalan Lazim</h2>
+        <p>Jawapan ringkas untuk penduduk yang menggunakan Tawau Aduan.</p>
         <div class="profile-list">
-          <div class="profile-item"><span class="mini-icon">?</span><div><strong>How do I report?</strong><small>Add photo, category, location, then submit.</small></div></div>
-          <div class="profile-item"><span class="mini-icon">#</span><div><strong>Where is my case number?</strong><small>It appears after submission and in notifications.</small></div></div>
-          <div class="profile-item"><span class="mini-icon">☎</span><div><strong>Need support?</strong><small>Contact civic response support.</small></div></div>
+          <div class="profile-item"><span class="mini-icon">?</span><div><strong>Bagaimana saya membuat aduan?</strong><small>Tambah foto, pilih kategori, tetapkan lokasi, kemudian hantar.</small></div></div>
+          <div class="profile-item"><span class="mini-icon">#</span><div><strong>Di mana nombor kes saya?</strong><small>Nombor kes muncul selepas penghantaran dan dalam notifikasi.</small></div></div>
+          <div class="profile-item"><span class="mini-icon">☎</span><div><strong>Perlu bantuan?</strong><small>Hubungi sokongan respons sivik.</small></div></div>
         </div>
       </section>
     `,
     notifications: `
       <section class="utility-card notifications-screen">
-        <h2>Notifications</h2>
-        <div class="notification-tabs" role="tablist" aria-label="Notification filters">
-          <button class="is-active" type="button">All Updates</button>
-          <button type="button">My History</button>
+        <h2>Notifikasi</h2>
+        <div class="notification-tabs" role="tablist" aria-label="Tapisan notifikasi">
+          <button class="is-active" type="button">Semua Kemas Kini</button>
+          <button type="button">Sejarah Saya</button>
         </div>
         <div class="notification-list notification-list--updates">
           ${notifications.map((item) => NotificationItem(item)).join("")}
@@ -446,50 +446,50 @@ function showUtility(type, options = {}) {
     `,
     profile: `
       <section class="utility-card profile-screen">
-        <h2>Profile</h2>
-        <p>Only your phone number is used for case updates. No extra personal details needed.</p>
+        <h2>Profil</h2>
+        <p>Hanya nombor telefon anda digunakan untuk kemas kini kes. Tiada butiran peribadi tambahan diperlukan.</p>
         <div class="profile-phone-card">
           <span class="mini-icon">☎</span>
           <div>
             <strong>0123456789</strong>
-            <small>Phone number for WhatsApp / SMS updates</small>
+            <small>Nombor telefon untuk kemas kini WhatsApp / SMS</small>
           </div>
         </div>
       </section>
 
       <section class="utility-card">
-        <h2>My Account</h2>
+        <h2>Akaun Saya</h2>
         <div class="profile-list">
-          <button class="profile-item mini-case-button" data-profile-action="reports" type="button"><span class="mini-icon">#</span><div><strong>My Reports</strong><small>View your submitted cases</small></div></button>
-          <button class="profile-item mini-case-button" data-profile-action="notifications" type="button"><span class="mini-icon">🔔</span><div><strong>Notification Settings</strong><small>WhatsApp and push updates</small></div></button>
+          <button class="profile-item mini-case-button" data-profile-action="reports" type="button"><span class="mini-icon">#</span><div><strong>Aduan Saya</strong><small>Lihat kes yang telah dihantar</small></div></button>
+          <button class="profile-item mini-case-button" data-profile-action="notifications" type="button"><span class="mini-icon">🔔</span><div><strong>Tetapan Notifikasi</strong><small>Kemas kini WhatsApp dan push</small></div></button>
         </div>
       </section>
 
       <section class="utility-card">
-        <h2>Language</h2>
-        <div class="language-options" aria-label="Language options">
-          <button class="is-active" type="button">English</button>
-          <button type="button">Bahasa Malaysia</button>
+        <h2>Bahasa</h2>
+        <div class="language-options" aria-label="Pilihan bahasa">
+          <button class="is-active" type="button">Bahasa Malaysia</button>
+          <button type="button">English</button>
           <button type="button">中文</button>
         </div>
       </section>
 
       <section class="utility-card">
         <div class="profile-list profile-list--plain">
-          <button class="profile-item mini-case-button" data-profile-action="help" type="button"><span class="mini-icon">?</span><div><strong>Help & FAQ</strong><small>Get answers or contact support</small></div></button>
-          <button class="profile-item mini-case-button" data-profile-action="privacy" type="button"><span class="mini-icon">✓</span><div><strong>Privacy Policy</strong><small>How case information is protected</small></div></button>
-          <button class="profile-item profile-item--logout mini-case-button" data-profile-action="logout" type="button"><span class="mini-icon">↗</span><div><strong>Clear Session</strong><small>Return to Home</small></div></button>
+          <button class="profile-item mini-case-button" data-profile-action="help" type="button"><span class="mini-icon">?</span><div><strong>Bantuan & Soalan Lazim</strong><small>Dapatkan jawapan atau hubungi sokongan</small></div></button>
+          <button class="profile-item mini-case-button" data-profile-action="privacy" type="button"><span class="mini-icon">✓</span><div><strong>Dasar Privasi</strong><small>Cara maklumat kes dilindungi</small></div></button>
+          <button class="profile-item profile-item--logout mini-case-button" data-profile-action="logout" type="button"><span class="mini-icon">↗</span><div><strong>Kosongkan Sesi</strong><small>Kembali ke Laman Utama</small></div></button>
         </div>
       </section>
     `,
     privacy: `
       <section class="utility-card">
-        <h2>Privacy Policy</h2>
-        <p>Tawau Aduan only uses your phone number to send case updates and help you track reports.</p>
+        <h2>Dasar Privasi</h2>
+        <p>Tawau Aduan hanya menggunakan nombor telefon anda untuk menghantar kemas kini kes dan membantu anda menyemak aduan.</p>
         <div class="profile-list">
-          <div class="profile-item"><span class="mini-icon">✓</span><div><strong>Minimal Data</strong><small>No IC number, full name, or private profile details are required.</small></div></div>
-          <div class="profile-item"><span class="mini-icon">#</span><div><strong>Case Information</strong><small>Photos, category, location, and description are used to process your complaint.</small></div></div>
-          <div class="profile-item"><span class="mini-icon">◉</span><div><strong>Public Nearby Issues</strong><small>Only issue type, general area, and status are shown publicly.</small></div></div>
+          <div class="profile-item"><span class="mini-icon">✓</span><div><strong>Data Minimum</strong><small>No. IC, nama penuh atau butiran profil peribadi tidak diperlukan.</small></div></div>
+          <div class="profile-item"><span class="mini-icon">#</span><div><strong>Maklumat Kes</strong><small>Foto, kategori, lokasi dan penerangan digunakan untuk memproses aduan anda.</small></div></div>
+          <div class="profile-item"><span class="mini-icon">◉</span><div><strong>Aduan Awam Berdekatan</strong><small>Hanya jenis isu, kawasan umum dan status dipaparkan kepada orang awam.</small></div></div>
         </div>
       </section>
     `,
@@ -519,30 +519,30 @@ function showCaseDetails(caseId = latestCaseNumber, options = {}) {
   form.style.display = "none";
   document.querySelector(".progress-panel").style.display = "none";
   resultPanel.innerHTML = `
-    ${ScreenHeader({ title: "Case Details", backAttrs: 'data-profile-action="reports"', helpId: "caseHelpBtn" })}
+    ${ScreenHeader({ title: "Butiran Kes", backAttrs: 'data-profile-action="reports"', helpId: "caseHelpBtn" })}
     <section class="case-card">
       <div class="case-card-head">
         <div>
-          <span>Case Number</span>
+          <span>Nombor Kes</span>
           <strong>${escapeHtml(activeCaseNumber)}</strong>
         </div>
-        <button class="copy-btn" type="button" aria-label="Copy case number">Copy</button>
+        <button class="copy-btn" type="button" aria-label="Salin nombor kes">Salin</button>
       </div>
       <div class="case-meta">
-        <span>Reported on</span>
+        <span>Dilaporkan pada</span>
         <strong>${escapeHtml(mockCase.reportedAt)}</strong>
       </div>
       ${StatusBadge(mockCase.status, statusTone(mockCase.status))}
-      <p class="case-reassurance">Your case is being handled by the relevant department.</p>
+      <p class="case-reassurance">Kes anda sedang dikendalikan oleh jabatan berkaitan.</p>
     </section>
     <section class="case-section timeline-section">
-      <h3>Status Timeline</h3>
+      <h3>Garis Masa Status</h3>
       <div class="case-timeline">
         ${mockCase.timeline.map((item) => TimelineItem(item)).join("")}
       </div>
     </section>
     <section class="case-section issue-summary-card">
-      <h3>Issue Summary</h3>
+      <h3>Ringkasan Isu</h3>
       <div class="issue-summary-row">
         <div class="issue-thumb"></div>
         <div>
@@ -552,27 +552,27 @@ function showCaseDetails(caseId = latestCaseNumber, options = {}) {
         </div>
       </div>
       <div class="ai-summary issue-ai-summary">
-        <span>Issue Summary:</span>
+        <span>Ringkasan Isu:</span>
         <p>${escapeHtml(mockCase.summary)}</p>
       </div>
     </section>
     <section class="case-section">
-      <h3>Officer Update</h3>
+      <h3>Kemas Kini Pegawai</h3>
       <div class="officer-update">
-        <p>Road maintenance team has been assigned. Site inspection is scheduled.</p>
-        <span>03 June 2026, 11:20 AM</span>
+        <p>Pasukan penyelenggaraan jalan telah ditugaskan. Pemeriksaan tapak dijadualkan.</p>
+        <span>03 Jun 2026, 11:20 pagi</span>
         <div class="before-after">
-          <div><small>Before</small></div>
-          <div><small>After</small></div>
+          <div><small>Sebelum</small></div>
+          <div><small>Selepas</small></div>
         </div>
       </div>
     </section>
     <section class="case-section">
-      <h3>Notification Settings</h3>
-      <label class="toggle-row"><span>WhatsApp Updates</span><input type="checkbox" checked /></label>
-      <label class="toggle-row"><span>Push Notification</span><input type="checkbox" checked /></label>
+      <h3>Tetapan Notifikasi</h3>
+      <label class="toggle-row"><span>Kemas Kini WhatsApp</span><input type="checkbox" checked /></label>
+      <label class="toggle-row"><span>Notifikasi Push</span><input type="checkbox" checked /></label>
     </section>
-    ${ButtonPrimary("Report Another Issue", { id: "newReportBtn" })}
+    ${ButtonPrimary("Buat Aduan Baru", { id: "newReportBtn" })}
   `;
   resultPanel.classList.add("is-visible");
   if (!options.skipRoute) updateRoute(`/case/${activeCaseNumber}`);
@@ -584,11 +584,11 @@ function showPhoneLogin(options = {}) {
   showUtility("login", { skipRoute: true });
   utilityPanel.innerHTML = `
     <section class="utility-card">
-      <h2>Phone Login</h2>
-      <p>Enter your phone number to receive case updates.</p>
+      <h2>Log Masuk Telefon</h2>
+      <p>Masukkan nombor telefon anda untuk menerima kemas kini kes.</p>
       <div class="case-search">
-        <input type="tel" inputmode="tel" placeholder="Example: 0123456789" />
-        ${ButtonPrimary("Continue to Home", { id: "loginContinue" })}
+        <input type="tel" inputmode="tel" placeholder="Contoh: 0123456789" />
+        ${ButtonPrimary("Terus ke Laman Utama", { id: "loginContinue" })}
       </div>
     </section>
   `;
@@ -698,24 +698,24 @@ photoInput.addEventListener("change", () => {
 
 locationBtn.addEventListener("click", () => {
   if (!navigator.geolocation) {
-    locationStatus.textContent = "This browser does not support automatic location. Please enter the address manually.";
+    locationStatus.textContent = "Pelayar ini tidak menyokong lokasi automatik. Sila masukkan alamat secara manual.";
     return;
   }
 
-  locationStatus.textContent = "Getting current location...";
+  locationStatus.textContent = "Sedang mendapatkan lokasi semasa...";
   navigator.geolocation.getCurrentPosition(
     (position) => {
       coordinates = {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
       };
-      locationStatus.textContent = `Location detected: ${coordinates.latitude.toFixed(5)}, ${coordinates.longitude.toFixed(5)}`;
+      locationStatus.textContent = `Lokasi dikesan: ${coordinates.latitude.toFixed(5)}, ${coordinates.longitude.toFixed(5)}`;
       if (!locationText.value.trim()) {
-        locationText.value = "Near current location";
+        locationText.value = "Berhampiran lokasi semasa";
       }
     },
     () => {
-      locationStatus.textContent = "Location could not be detected. Please check permission or enter the address manually.";
+      locationStatus.textContent = "Lokasi tidak dapat dikesan. Sila semak kebenaran lokasi atau masukkan alamat secara manual.";
     },
     { enableHighAccuracy: true, timeout: 9000, maximumAge: 0 },
   );
@@ -743,7 +743,7 @@ resultPanel.addEventListener("click", (event) => {
     photoPreview.removeAttribute("src");
     uploadZone.classList.remove("has-image");
     descriptionCounter.textContent = "0/500";
-    locationStatus.textContent = "This is where the issue happened.";
+    locationStatus.textContent = "Di sinilah isu berlaku.";
     form.style.display = "";
     document.querySelector(".progress-panel").style.display = "";
     resultPanel.classList.remove("is-visible");
@@ -753,7 +753,7 @@ resultPanel.addEventListener("click", (event) => {
   }
 
   if (event.target.closest(".copy-btn")) {
-    event.target.closest(".copy-btn").textContent = "Copied";
+    event.target.closest(".copy-btn").textContent = "Disalin";
   }
 });
 

@@ -11,13 +11,15 @@
     <main class="PremiumScreenBackground app-shell is-home">
       <header class="app-header">
         <div class="brand-lockup" aria-label="Tawau Aduan">
-          <span class="brand-mark">TA</span>
+          <span class="brand-mark">
+            <img src="assets/logo-mark.jpg" alt="" />
+          </span>
           <div>
             <strong>Tawau Aduan</strong>
-            <small>Smart Civic Response</small>
+            <small>Respons Sivik Pintar</small>
           </div>
         </div>
-        <button class="icon-button" id="notificationsButton" type="button" aria-label="Notifications">
+        <button class="icon-button" id="notificationsButton" type="button" aria-label="Notifikasi">
           <span class="bell-icon"></span>
         </button>
       </header>
@@ -32,225 +34,225 @@
         <div class="hero__shade" aria-hidden="true"></div>
         <div class="hero__top">
           <div>
-            <p class="eyebrow">Smart Civic Response</p>
+            <p class="eyebrow">Respons Sivik Pintar</p>
             <h1>Tawau Aduan</h1>
             <p class="hero__copy">
-              Together for a Cleaner, Safer Tawau.
+              Bersama untuk Tawau yang lebih bersih dan selamat.
             </p>
           </div>
-          <div class="trust-badge" aria-label="4 step report">
+          <div class="trust-badge" aria-label="Aduan 4 langkah">
             <span>4</span>
-            <small>steps</small>
+            <small>langkah</small>
           </div>
         </div>
       </section>
 
-      <section class="PremiumSurfaceCard promise-card" aria-label="App promise">
-        <strong>Report issues, track progress, and help build a better community.</strong>
+      <section class="PremiumSurfaceCard promise-card" aria-label="Janji aplikasi">
+        <strong>Laporkan isu, semak perkembangan, dan bantu membina komuniti yang lebih baik.</strong>
       </section>
 
-      <section class="quick-actions" aria-label="Aduan actions">
+      <section class="quick-actions" aria-label="Tindakan aduan">
         <button class="ActionCard QuickActionCard action-card action-card--document" id="newAduanAction" type="button">
           <span class="action-icon document-icon"></span>
-          <strong>Report an Issue</strong>
-          <small>Let us know what’s wrong</small>
+          <strong>Buat Aduan</strong>
+          <small>Maklumkan isu yang berlaku</small>
         </button>
         <button class="ActionCard QuickActionCard action-card" id="trackAction" type="button">
           <span class="action-icon search-icon"></span>
-          <strong>Track Case</strong>
-          <small>Follow up on your complaint</small>
+          <strong>Semak Kes</strong>
+          <small>Ikuti perkembangan aduan anda</small>
         </button>
         <button class="ActionCard QuickActionCard action-card action-card--nearby" id="nearbyAction" type="button">
           <span class="action-icon pin-dot-icon"></span>
-          <strong>Nearby Issues</strong>
-          <small>See issues reported near you</small>
+          <strong>Aduan Berdekatan</strong>
+          <small>Lihat isu berhampiran anda</small>
         </button>
         <button class="ActionCard QuickActionCard action-card action-card--help" id="helpAction" type="button">
           <span class="action-icon headset-icon"></span>
-          <strong>Help</strong>
-          <small>FAQs & contact support</small>
+          <strong>Bantuan</strong>
+          <small>Soalan lazim & sokongan</small>
         </button>
       </section>
 
-      <section class="PremiumSurfaceCard StatsCard glance-card" aria-label="Tawau at a glance">
+      <section class="PremiumSurfaceCard StatsCard glance-card" aria-label="Sekilas Tawau">
         <div class="glance-head">
-          <h2>Tawau at a Glance</h2>
-          <span>This Month</span>
+          <h2>Sekilas Tawau</h2>
+          <span>Bulan Ini</span>
         </div>
         <div class="glance-stats">
           <div class="StatMetric">
-            <small>Issues Reported</small>
+            <small>Aduan Dilaporkan</small>
             <strong>128</strong>
           </div>
           <div class="StatMetric">
-            <small>In Progress</small>
+            <small>Sedang Diproses</small>
             <strong>94</strong>
           </div>
           <div class="StatMetric">
-            <small>Resolved</small>
+            <small>Selesai</small>
             <strong>76</strong>
           </div>
         </div>
       </section>
 
       <section class="ThankYouBanner community-banner">
-        <strong>Thank you for helping make Tawau better!</strong>
+        <strong>Terima kasih kerana membantu menjadikan Tawau lebih baik!</strong>
       </section>
 
       <section class="utility-panel" id="utilityPanel" aria-live="polite"></section>
 
-      <section class="progress-panel" aria-label="Submission progress">
+      <section class="progress-panel" aria-label="Kemajuan penghantaran">
         <div class="step is-active" data-step-indicator="1">
           <span>1</span>
-          <p>Details</p>
+          <p>Butiran</p>
         </div>
         <div class="step" data-step-indicator="3">
           <span>2</span>
-          <p>Location</p>
+          <p>Lokasi</p>
         </div>
         <div class="step" data-step-indicator="4">
           <span>3</span>
-          <p>Submit</p>
+          <p>Hantar</p>
         </div>
       </section>
 
       <form class="report-form" id="reportForm">
         <section class="form-page is-active" data-page="1">
           <div class="ScreenHeader screen-topbar">
-            <button class="screen-icon-btn" type="button" id="reportBackBtn" aria-label="Back">‹</button>
-            <h2>Report an Issue</h2>
-            <button class="screen-icon-btn" type="button" id="reportHelpBtn" aria-label="Help">?</button>
+            <button class="screen-icon-btn" type="button" id="reportBackBtn" aria-label="Kembali">‹</button>
+            <h2>Buat Aduan</h2>
+            <button class="screen-icon-btn" type="button" id="reportHelpBtn" aria-label="Bantuan">?</button>
           </div>
           <div class="section-heading">
-            <h3>Add Photos <span>(Optional)</span></h3>
-            <p>Upload clear photos to help us understand the issue better.</p>
+            <h3>Tambah Foto <span>(Pilihan)</span></h3>
+            <p>Muat naik foto yang jelas supaya isu lebih mudah difahami.</p>
           </div>
-          <div class="photo-row" aria-label="Photo uploads">
+          <div class="photo-row" aria-label="Muat naik foto">
             <div class="photo-thumb photo-thumb--sample">
-              <button type="button" aria-label="Remove photo">×</button>
+              <button type="button" aria-label="Buang foto">×</button>
             </div>
             <div class="photo-thumb photo-thumb--sample photo-thumb--garbage">
-              <button type="button" aria-label="Remove photo">×</button>
+              <button type="button" aria-label="Buang foto">×</button>
             </div>
             <div class="photo-thumb photo-thumb--sample photo-thumb--light">
-              <button type="button" aria-label="Remove photo">×</button>
+              <button type="button" aria-label="Buang foto">×</button>
             </div>
             <label class="PhotoUploadCard add-photo-card" for="photoInput">
               <input id="photoInput" name="photo" type="file" accept="image/*" capture="environment" />
               <span class="camera-mini-icon"></span>
-              <strong>Add Photo</strong>
+              <strong>Tambah Foto</strong>
               <img id="photoPreview" alt="" />
             </label>
           </div>
 
           <div class="section-heading section-heading--spaced">
-            <h3>Choose Category</h3>
+            <h3>Pilih Kategori</h3>
           </div>
-          <div class="category-grid category-grid--chips" role="radiogroup" aria-label="Issue category">
+          <div class="category-grid category-grid--chips" role="radiogroup" aria-label="Kategori isu">
             <label class="CategoryChip">
-              <input type="radio" name="category" value="Garbage" checked />
-              <span><i class="cat-icon cat-icon--garbage"></i>Garbage</span>
+              <input type="radio" name="category" value="Sampah" checked />
+              <span><i class="cat-icon cat-icon--garbage"></i>Sampah</span>
             </label>
             <label class="CategoryChip">
-              <input type="radio" name="category" value="Road Damage" />
-              <span><i class="cat-icon cat-icon--road"></i>Road Damage</span>
+              <input type="radio" name="category" value="Kerosakan Jalan" />
+              <span><i class="cat-icon cat-icon--road"></i>Kerosakan Jalan</span>
             </label>
             <label class="CategoryChip">
-              <input type="radio" name="category" value="Drainage" />
-              <span><i class="cat-icon cat-icon--drain"></i>Drainage</span>
+              <input type="radio" name="category" value="Saliran" />
+              <span><i class="cat-icon cat-icon--drain"></i>Saliran</span>
             </label>
             <label class="CategoryChip">
-              <input type="radio" name="category" value="Street Light" />
-              <span><i class="cat-icon cat-icon--light"></i>Street Light</span>
+              <input type="radio" name="category" value="Lampu Jalan" />
+              <span><i class="cat-icon cat-icon--light"></i>Lampu Jalan</span>
             </label>
             <label class="CategoryChip">
-              <input type="radio" name="category" value="Public Facility" />
-              <span><i class="cat-icon cat-icon--facility"></i>Public Facility</span>
+              <input type="radio" name="category" value="Kemudahan Awam" />
+              <span><i class="cat-icon cat-icon--facility"></i>Kemudahan Awam</span>
             </label>
             <label class="CategoryChip">
-              <input type="radio" name="category" value="Cleanliness" />
-              <span><i class="cat-icon cat-icon--clean"></i>Cleanliness</span>
+              <input type="radio" name="category" value="Kebersihan" />
+              <span><i class="cat-icon cat-icon--clean"></i>Kebersihan</span>
             </label>
           </div>
           <div class="report-nearby-nudge">
-            <strong>Similar issue nearby?</strong>
-            <span>Check Nearby Issues to avoid duplicate reports.</span>
-            <button type="button" id="reportNearbyHint">View Nearby</button>
+            <strong>Isu serupa berdekatan?</strong>
+            <span>Semak Aduan Berdekatan untuk elak aduan berulang.</span>
+            <button type="button" id="reportNearbyHint">Lihat Berdekatan</button>
           </div>
 
           <label class="field">
-            <span>Describe the Issue</span>
-            <textarea id="description" name="description" rows="4" maxlength="500" placeholder="Provide more details about the issue..."></textarea>
+            <span>Terangkan Isu</span>
+            <textarea id="description" name="description" rows="4" maxlength="500" placeholder="Berikan sedikit butiran tentang isu ini..."></textarea>
           </label>
           <div class="char-counter" id="descriptionCounter">0/500</div>
           <div class="page-actions">
-            <button class="ButtonPrimary primary-btn" type="button" data-next>Next</button>
+            <button class="ButtonPrimary primary-btn" type="button" data-next>Seterusnya</button>
           </div>
         </section>
 
         <section class="form-page" data-page="3">
           <div class="ScreenHeader screen-topbar">
-            <button class="screen-icon-btn" type="button" data-back aria-label="Back">‹</button>
-            <h2>Select Location</h2>
-            <button class="screen-icon-btn" type="button" id="locationHelpBtn" aria-label="Help">?</button>
+            <button class="screen-icon-btn" type="button" data-back aria-label="Kembali">‹</button>
+            <h2>Pilih Lokasi</h2>
+            <button class="screen-icon-btn" type="button" id="locationHelpBtn" aria-label="Bantuan">?</button>
           </div>
           <div class="location-screen">
             <div class="map-card location-map">
               <div class="map-grid"></div>
               <div class="map-pin"></div>
-              <p id="locationStatus">This is where the issue happened.</p>
+              <p id="locationStatus">Di sinilah isu berlaku.</p>
             </div>
             <button class="location-btn location-btn--floating" id="locationBtn" type="button">
               <span class="target-icon"></span>
-              Use Current Location
+              Guna Lokasi Semasa
             </button>
             <label class="AddressCard address-card">
-              <span>Address</span>
+              <span>Alamat</span>
               <textarea id="locationText" name="location" rows="3" required>Jalan Apas, 91000 Tawau,
 Sabah, Malaysia</textarea>
             </label>
           </div>
           <div class="page-actions location-actions">
-            <button class="ButtonPrimary primary-btn" type="button" data-next>Confirm Location</button>
+            <button class="ButtonPrimary primary-btn" type="button" data-next>Sahkan Lokasi</button>
           </div>
         </section>
 
         <section class="form-page" data-page="4">
           <div class="ScreenHeader screen-topbar">
-            <button class="screen-icon-btn" type="button" data-back aria-label="Back">‹</button>
-            <h2>Review Report</h2>
-            <button class="screen-icon-btn" type="button" id="reviewHelpBtn" aria-label="Help">?</button>
+            <button class="screen-icon-btn" type="button" data-back aria-label="Kembali">‹</button>
+            <h2>Semak Aduan</h2>
+            <button class="screen-icon-btn" type="button" id="reviewHelpBtn" aria-label="Bantuan">?</button>
           </div>
           <div class="summary-card" id="summaryCard"></div>
           <div class="page-actions">
-            <button class="ButtonSecondary ghost-btn" id="editDetailsBtn" type="button">Edit Details</button>
-            <button class="ButtonPrimary primary-btn" type="submit">Submit Report</button>
+            <button class="ButtonSecondary ghost-btn" id="editDetailsBtn" type="button">Edit Butiran</button>
+            <button class="ButtonPrimary primary-btn" type="submit">Hantar Aduan</button>
           </div>
         </section>
       </form>
 
       <section class="result-panel" id="resultPanel" aria-live="polite"></section>
 
-      <nav class="FloatingBottomNav BottomTabBar bottom-nav" aria-label="App navigation">
+      <nav class="FloatingBottomNav BottomTabBar bottom-nav" aria-label="Navigasi aplikasi">
         <a class="is-current" href="/home" id="navHome">
           <span class="home-icon"></span>
-          <small>Home</small>
+          <small>Laman Utama</small>
         </a>
         <a href="/track" id="navTrack">
           <span class="list-icon"></span>
-          <small>Track</small>
+          <small>Semak</small>
         </a>
         <a href="/report" id="navAduan">
           <span class="plus-icon"></span>
-          <small>Report</small>
+          <small>Aduan</small>
         </a>
         <a href="/nearby" id="navNearby">
           <span class="pin-dot-icon"></span>
-          <small>Nearby</small>
+          <small>Berdekatan</small>
         </a>
         <a href="/profile" id="navProfile">
           <span class="user-icon"></span>
-          <small>Profile</small>
+          <small>Profil</small>
         </a>
       </nav>
     </main>
